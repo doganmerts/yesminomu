@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e987cb 0%, #764ba2 100%);
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating hearts background */
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: white;
+            padding: 60px 80px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 40px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .button-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+            position: relative;
+            min-height: 120px;
+            align-items: center;
+        }
+
+        button {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 600;
+            font-size: 20px;
+            padding: 20px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            left: 50%;
+            transform: translateX(-150%);
+            z-index: 5;
+        }
+
+        #yesBtn.grow {
+            animation: grow 0.3s ease-out forwards;
+        }
+
+        @keyframes grow {
+            to {
+                transform: translateX(-150%) scale(1.15);
+            }
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #666;
+            left: 50%;
+            transform: translateX(50%);
+            transition: all 0.2s ease;
+        }
+
+        #noBtn:hover {
+            background: linear-gradient(135deg, #fed6e3 0%, #a8edea 100%);
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            z-index: 100;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .celebration-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+            text-align: center;
+        }
+
+        .celebration h2 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 72px;
+            margin-bottom: 30px;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .bunny {
+            font-size: 200px;
+            animation: jump 0.6s infinite;
+        }
+
+        @keyframes jump {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(5deg);
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .cursor-expanded {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="rgba(255,105,180,0.5)" stroke="white" stroke-width="2"/></svg>') 20 20, pointer !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating hearts -->
+    <script>
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = '💕';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 8 + 's';
+            heart.style.animationDuration = (8 + Math.random() * 4) + 's';
+            document.body.appendChild(heart);
+        }
+    </script>
+
+    <div class="container">
+        <h1>Benimle Sevgili Olur Musun? 🤍</h1>
+        
+        <div class="button-container">
+            <button id="yesBtn">Evet <3 </button>
+            <button id="noBtn">Hayır 😢</button>
+        </div>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <div class="celebration-content">
+            <div class="bunny">🐰</div>
+            <h2>Yaaaay! 🎉💕</h2>
+            <p style="font-size: 28px; font-weight: 600;">Taşvan mutlu, Sincap mutlu! 🥰</p>
+        </div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const celebration = document.getElementById('celebration');
+        let cursorExpanded = false;
+        let growthCount = 0;
+
+        // Yes button hover effect - expand cursor
+        yesBtn.addEventListener('mouseenter', () => {
+            document.body.classList.add('cursor-expanded');
+        });
+
+        yesBtn.addEventListener('mouseleave', () => {
+            document.body.classList.remove('cursor-expanded');
+        });
+
+        // Yes button click
+        yesBtn.addEventListener('click', () => {
+            celebration.style.display = 'block';
+            
+            // Create confetti
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    celebration.appendChild(confetti);
+                }, i * 30);
+            }
+        });
+
+        // No button hover effect - move away
+        noBtn.addEventListener('mouseenter', (e) => {
+            const container = document.querySelector('.button-container');
+            const containerRect = container.getBoundingClientRect();
+            
+            // Random position within container
+            const maxX = containerRect.width - noBtn.offsetWidth;
+            const maxY = containerRect.height - noBtn.offsetHeight;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+            noBtn.style.transform = 'none';
+
+            // Grow yes button
+            growthCount++;
+            const newScale = 1 + (growthCount * 0.15);
+            yesBtn.style.transform = `translateX(-150%) scale(${newScale})`;
+        });
+
+        // Prevent no button click
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Button moves away on hover, so this should rarely trigger
+            // But if it does, just move it again
+            noBtn.dispatchEvent(new Event('mouseenter'));
+        });
+    </script>
+</body>
+</html>
